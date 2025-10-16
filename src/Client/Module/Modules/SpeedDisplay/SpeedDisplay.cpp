@@ -3,8 +3,14 @@
 
 void SpeedDisplay::onEnable()
 {
-    Listen(this, RenderEvent, &SpeedDisplay::onRender)
-    Listen(this, TickEvent, &SpeedDisplay::onTick)
+    if (SDK::clientInstance->getLocalPlayer()) {
+        auto stateVectorComponent = SDK::clientInstance->getLocalPlayer()->getStateVectorComponent();
+        if (stateVectorComponent != nullptr) {
+            PrevPos = stateVectorComponent->Pos; // Set PrevPos to the player's current position
+        }
+    }
+    Listen(this, RenderEvent, &SpeedDisplay::onRender);
+    Listen(this, TickEvent, &SpeedDisplay::onTick);
     Module::onEnable();
 }
 
